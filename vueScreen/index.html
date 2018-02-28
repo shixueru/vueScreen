@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <title>Document</title>
+  <!-- <link rel="stylesheet" href="./css/commen.css">
+  <link rel="stylesheet" href="./css/swiper-3.4.2.css">
+  <link rel="stylesheet" href="./css/landdingPage.css"> -->
+  <script src='./js/swiper.min.js'></script>
+  <script src='./js/jquery.js'></script>
+  <script src='./js/md5.js'></script>
+  <script src='./js/vue.min.js'></script>
+  <script src='./js/weixin.js'></script>
+</head>
+
+<body>
+  <div id='app'>
+    <template>
+      <div v-for="(item ,index) in dataListCopy" :key="index">
+        <div v-if="item.moduleType=='1'" :style='{paddingTop:item.upPadding+"px",paddingBottom:item.downPadding+"px"}'>
+          <div class='swiper-container' :class="['swiper-container'+index]">
+            <div class="swiper-wrapper" :style="{height:winWidth*(item.hight/item.width)+'px'}">
+              <a :href="secondItem.bannerLink" class="swiper-slide block" v-for="(secondItem,index) in item.bannerList" :style="{backgroundImage:'url('+secondItem.bannerImg+')'}">
+              </a>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination swiper-pagination-white" :class="['swiper-pagination'+index]"></div>
+          </div>
+        </div>
+        <div v-if="item.moduleType=='2'" class="html" v-html='item.pageLoadContent'>
+        </div>
+        <div class="MT10 width90 infoCellection font16 textL" v-if="item.moduleType=='3'">
+          <div v-for="(secondItem,index1) in item.collectList">
+            <div class="MB15 flex font14" v-if="secondItem.selectType=='0'">
+              <span class="MR5 width80P textL lineHeight2 inlineB" :class="{require:secondItem.needCheck=='Y'}">{{secondItem.fieldName}}</span>
+              <span class="flex1 inlineB">
+                <input type="text" class="width100" v-model="secondItem.inputText">
+              </span>
+            </div>
+            <div class="MB15 flex font14" v-if="secondItem.selectType=='1'">
+              <span class="MR5 width80P lineHeight2 textL inlineB" :class="{require:secondItem.needCheck=='Y'}">{{secondItem.fieldName}}</span>
+              <span class="flex1 inlineB selectWrap">
+                <select name="" id="" class="width100" v-model="secondItem.selectOption">
+                  <option :value="thirdItem" v-for="(thirdItem,index2) in secondItem.selectDetai">{{thirdItem}}</option>
+                </select>
+              </span>
+            </div>
+            <div class="MB15 flex font14" v-if="secondItem.selectType=='2'">
+              <span class=" MR5 width80P  textL inlineB" :class="{require:secondItem.needCheck=='Y'}">{{secondItem.fieldName}}</span>
+              <span class=" flex1 inlineB flex labelWrapper">
+                <label :for="index+''+index1+''+index2" v-for="(thirdItem,index2) in secondItem.selectDetai" class="MR10 PB5 inlineB label tapBkg">
+                  <input type="checkbox" :id="index+''+index1+''+index2" class="width14P" :value="thirdItem" v-model="secondItem.selectArray">
+                  <span class="circle">
+                    <i></i>
+                  </span>
+                  <span class="text">{{thirdItem}}</span>
+                </label>
+              </span>
+            </div>
+          </div>
+          <button class="button" @click="submitData(index)">提交</button>
+        </div>
+      </div>
+      <alert-box v-model='isShow' :text='text'></alert-box>
+    </template>
+  </div>
+  <template id='alertBox'>
+    <transition name='fade'>
+      <div class="alertBox" v-show='showAlert'>
+        {{text}}
+      </div>
+    </transition>
+  </template>
+  <script src="./js/landingPage.js"></script>
+</body>
+
+</html>
